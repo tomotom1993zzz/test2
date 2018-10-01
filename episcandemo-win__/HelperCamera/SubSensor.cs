@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace HelperCameraUtil
 {
-    public class Subsensor
+    public class SubSensor
     {
         public int val = 0;
         /// <summary>
@@ -60,11 +60,11 @@ namespace HelperCameraUtil
             BGR24,
             BGR36,
         }
-        public Subsensor(int deviceId = -1)
+        public SubSensor(int deviceId = -1)
         {
             InitCamera(deviceId);
         }
-        public Subsensor(IntPtr handle, int deviceId = -1)
+        public SubSensor(IntPtr handle, int deviceId = -1)
         {
             this._displayHandle = handle;
 
