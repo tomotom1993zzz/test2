@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cp.xml" />
+    <Content Include="cp_sub.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
