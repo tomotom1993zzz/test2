@@ -22,7 +22,7 @@ namespace HelperCameraUtil
 
         public void SetDelayExposure(float delay, float exposure)
         {
-            Sensor_h.ShutterMode = SubSensor.ShutterModeList.Global;
+            Sensor_h.ShutterMode = SubSensor.ShutterModeList_h.Global;
 
             try
             {
@@ -38,10 +38,10 @@ namespace HelperCameraUtil
         public async Task<Mat> CaptureAverage(int averageNum = 4)
         {
             // color mode
-            var isEightBit = Sensor_h.PixelFormat == SubSensor.PixelFormatList.Mono8
-                | Sensor_h.PixelFormat == SubSensor.PixelFormatList.BGR24;
-            var isMono = Sensor_h.PixelFormat == SubSensor.PixelFormatList.Mono8
-                | Sensor_h.PixelFormat == SubSensor.PixelFormatList.Mono12;
+            var isEightBit = Sensor_h.PixelFormat == SubSensor.PixelFormatList_h.Mono8
+                | Sensor_h.PixelFormat == SubSensor.PixelFormatList_h.BGR24;
+            var isMono = Sensor_h.PixelFormat == SubSensor.PixelFormatList_h.Mono8
+                | Sensor_h.PixelFormat == SubSensor.PixelFormatList_h.Mono12;
 
             int height = Sensor_h.Height, width = Sensor_h.Width;
 

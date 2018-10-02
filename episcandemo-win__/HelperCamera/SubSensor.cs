@@ -36,20 +36,20 @@ namespace HelperCameraUtil
         public delegate void SensorParameterChangedDelegate();
         public SensorParameterChangedDelegate OnSensorParameterChanged = () => { };
 
-        public enum ShutterModeList
+        public enum ShutterModeList_h
         {
             Global,
             Rolling,
         };
 
-        public enum TriggerModeList
+        public enum TriggerModeList_h
         {
             Software,
             RisingEdge,
             Continuous,
         }
 
-        public enum PixelFormatList
+        public enum PixelFormatList_h
         {
             Mono8,
             Mono12,
@@ -111,7 +111,7 @@ namespace HelperCameraUtil
         }
 
 
-        public ShutterModeList ShutterMode
+        public ShutterModeList_h ShutterMode
         {
             set
             {
@@ -124,13 +124,13 @@ namespace HelperCameraUtil
 
                 switch (value)
                 {
-                    case ShutterModeList.Global:
+                    case ShutterModeList_h.Global:
                         {
                             uEye.Defines.Status stat = this._camera.Device.Feature.ShutterMode.Set(uEye.Defines.Shuttermode.Global);
                             if (stat != uEye.Defines.Status.Success) throw new Exception("Failed to set global shutter mode.");
                         }
                         break;
-                    case ShutterModeList.Rolling:
+                    case ShutterModeList_h.Rolling:
                         {
                             uEye.Defines.Status stat = this._camera.Device.Feature.ShutterMode.Set(uEye.Defines.Shuttermode.Rolling);
                             if (stat != uEye.Defines.Status.Success) throw new Exception("Failed to set rolling shutter mode.");
@@ -151,15 +151,15 @@ namespace HelperCameraUtil
                 switch (mode)
                 {
                     case uEye.Defines.Shuttermode.Global:
-                        return ShutterModeList.Global;
+                        return ShutterModeList_h.Global;
                     case uEye.Defines.Shuttermode.Rolling:
-                        return ShutterModeList.Rolling;
+                        return ShutterModeList_h.Rolling;
                     default:
                         throw new Exception("Unknown shutter mode.");
                 }
             }
         }
-        public TriggerModeList TrigerMode
+        public TriggerModeList_h TrigerMode
         {
             set
             {
@@ -172,13 +172,13 @@ namespace HelperCameraUtil
 
                 switch (value)
                 {
-                    case TriggerModeList.Software:
+                    case TriggerModeList_h.Software:
                         stat = this._camera.Trigger.Set(uEye.Defines.TriggerMode.Software);               
                         break;
-                    case TriggerModeList.RisingEdge:
+                    case TriggerModeList_h.RisingEdge:
                         stat = this._camera.Trigger.Set(uEye.Defines.TriggerMode.Lo_Hi);
                         break;
-                    case TriggerModeList.Continuous:
+                    case TriggerModeList_h.Continuous:
                         stat = this._camera.Trigger.Set(uEye.Defines.TriggerMode.Continuous);
                         break;
                     default:
@@ -200,11 +200,11 @@ namespace HelperCameraUtil
                 switch (mode)
                 {
                     case uEye.Defines.TriggerMode.Software:
-                        return  TriggerModeList.Software;
+                        return  TriggerModeList_h.Software;
                     case uEye.Defines.TriggerMode.Lo_Hi:
-                        return TriggerModeList.RisingEdge;
+                        return TriggerModeList_h.RisingEdge;
                     case uEye.Defines.TriggerMode.Continuous:
-                        return TriggerModeList.Continuous;
+                        return TriggerModeList_h.Continuous;
                     default:
                         throw new Exception("Unknown trigger mode.");
                 }
@@ -563,10 +563,10 @@ namespace HelperCameraUtil
                         switch (m)
                             {
                             case uEye.Defines.Shuttermode.Rolling:
-                                list.Add(ShutterModeList.Rolling.ToString());
+                                list.Add(ShutterModeList_h.Rolling.ToString());
                                 break;
                             case uEye.Defines.Shuttermode.Global:
-                                list.Add(ShutterModeList.Global.ToString());
+                                list.Add(ShutterModeList_h.Global.ToString());
                                 break;
                             case uEye.Defines.Shuttermode.RollingGlobalStart:
                                 break;
@@ -596,13 +596,13 @@ namespace HelperCameraUtil
                         switch (m)
                         {
                             case uEye.Defines.TriggerMode.Software:
-                                list.Add(TriggerModeList.Software.ToString());
+                                list.Add(TriggerModeList_h.Software.ToString());
                                 break;
                             case uEye.Defines.TriggerMode.Lo_Hi:
-                                list.Add(TriggerModeList.RisingEdge.ToString());
+                                list.Add(TriggerModeList_h.RisingEdge.ToString());
                                 break;
                             case uEye.Defines.TriggerMode.Continuous:
-                                list.Add(TriggerModeList.Continuous.ToString());
+                                list.Add(TriggerModeList_h.Continuous.ToString());
                                 break;
                             default:
                                 break;
@@ -660,7 +660,7 @@ namespace HelperCameraUtil
                 this.AOI = rect;
             }
         }
-        public PixelFormatList PixelFormat
+        public PixelFormatList_h PixelFormat
         {
             get
             {
@@ -671,21 +671,21 @@ namespace HelperCameraUtil
                 switch (cm)
                 {
                     case uEye.Defines.ColorMode.Mono8:
-                        return PixelFormatList.Mono8;
+                        return PixelFormatList_h.Mono8;
                     case uEye.Defines.ColorMode.Mono12:
-                        return PixelFormatList.Mono12;
+                        return PixelFormatList_h.Mono12;
                     case uEye.Defines.ColorMode.SensorRaw8:
-                        return PixelFormatList.Raw8;
+                        return PixelFormatList_h.Raw8;
                     case uEye.Defines.ColorMode.SensorRaw12:
-                        return PixelFormatList.Raw12;
+                        return PixelFormatList_h.Raw12;
                     case uEye.Defines.ColorMode.BGR8Packed:
-                        return PixelFormatList.BGR24;
+                        return PixelFormatList_h.BGR24;
                     default:
                         throw new Exception("faild to get pixel format (colors not supported, yet.");
                         //case uEye.Defines.ColorMode.BGR8Packed:
-                        //    return PixelFormatList.BGR24;
+                        //    return PixelFormatList_h.BGR24;
                         //case uEye.Defines.ColorMode.BGRA12Unpacked:
-                        //    return PixelFormatList.BGR36;
+                        //    return PixelFormatList_h.BGR36;
                 }
             }
             set
@@ -704,11 +704,11 @@ namespace HelperCameraUtil
                 if (stat != uEye.Defines.Status.Success) throw new Exception("failed to get color mode.");
                 switch (value)
                 {
-                    case PixelFormatList.Mono8: cm = uEye.Defines.ColorMode.Mono8; break;
-                    case PixelFormatList.Mono12: cm = uEye.Defines.ColorMode.Mono12; break;
-                    case PixelFormatList.Raw8: cm = uEye.Defines.ColorMode.SensorRaw8; break;
-                    case PixelFormatList.Raw12: cm = uEye.Defines.ColorMode.SensorRaw12; break;
-                    case PixelFormatList.BGR24: cm = uEye.Defines.ColorMode.BGR8Packed; break;
+                    case PixelFormatList_h.Mono8: cm = uEye.Defines.ColorMode.Mono8; break;
+                    case PixelFormatList_h.Mono12: cm = uEye.Defines.ColorMode.Mono12; break;
+                    case PixelFormatList_h.Raw8: cm = uEye.Defines.ColorMode.SensorRaw8; break;
+                    case PixelFormatList_h.Raw12: cm = uEye.Defines.ColorMode.SensorRaw12; break;
+                    case PixelFormatList_h.BGR24: cm = uEye.Defines.ColorMode.BGR8Packed; break;
                     default:
                         throw new Exception("faild to set pixel format (colors not supported, yet.");
                 }

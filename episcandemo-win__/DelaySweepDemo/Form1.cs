@@ -1,6 +1,5 @@
 ﻿using EpiscanUtil;
 using HelperCameraUtil;
-using EpiscanDemoCS;
 using StructuredLightUtil;
 using System;
 using System.Collections.Generic;
@@ -22,6 +21,7 @@ namespace DelaySweepDemo
     public partial class Form1 : Form
     {
         private MyEpiscan episcan = null;
+        private SubCam subcam = null;
        
         private int count = 0;
         private int bsShowcount = 0;
@@ -57,6 +57,10 @@ namespace DelaySweepDemo
 
             public EpiscanUtil.MySensor.ShutterModeList ShutterMode = EpiscanUtil.MySensor.ShutterModeList.Global;
             public EpiscanUtil.MySensor.TriggerModeList TriggerMode = EpiscanUtil.MySensor.TriggerModeList.RisingEdge;
+
+            public HelperCameraUtil.SubSensor.ShutterModeList_h ShutterMode_h = HelperCameraUtil.SubSensor.ShutterModeList_h.Global;
+            public HelperCameraUtil.SubSensor.TriggerModeList_h TriggerMode_h = HelperCameraUtil.SubSensor.TriggerModeList_h.RisingEdge;
+
             public int Width = 1280;
             public int Height = 1024;
             //public int Width = 1600;
@@ -65,6 +69,7 @@ namespace DelaySweepDemo
             public int MasterGain = 20;
             public int Scaler = 100;
             public EpiscanUtil.MySensor.PixelFormatList PixelFormat = EpiscanUtil.MySensor.PixelFormatList.Mono8;
+            public HelperCameraUtil.SubSensor.PixelFormatList_h PixelFormat_h = HelperCameraUtil.SubSensor.PixelFormatList_h.Mono8;
 
             public void SaveAsXml(string path)
             {
@@ -88,7 +93,7 @@ namespace DelaySweepDemo
         };
 
         public CameraParameter _preset = new CameraParameter();
-
+        public CameraParameter _preset_h = new CameraParameter();
 
         public Form1()
         {
@@ -97,6 +102,7 @@ namespace DelaySweepDemo
             Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
 
             episcan = new MyEpiscan();
+            subcam = new SubCam();
 
             UpdateCameraList();
             InitUISyncboard();
@@ -397,20 +403,20 @@ namespace DelaySweepDemo
 
                 this._preset = CameraParameter.FromXml("cp.xml");
 
-                CamView f_sub = new CamView();
+                CamView f = new CamView();
 
-                episcan.InitializeSensor(f_sub.Handle, device_id);
+                episcan.InitializeSensor(f.Handle, device_id);
                 episcan.ImageRoi = Roi;
                 //Roi = episcan.ImageRoi;
                 SetUIImageRoi();
 
-                f_sub.Sensor = episcan.Sensor;
+                f.Sensor = episcan.Sensor;
 
 
-                f_sub.Show();
+                f.Show();
 
-                f_sub.Width = (int)(0.5 * episcan.Sensor.Width);
-                f_sub.Height = (int)(0.5 * episcan.Sensor.Height);
+                f.Width = (int)(0.5 * episcan.Sensor.Width);
+                f.Height = (int)(0.5 * episcan.Sensor.Height);
 
                 InitUIfromCamera();
                 InitUI();
@@ -451,28 +457,28 @@ namespace DelaySweepDemo
         {
             try
             {
-                int device_id = int.Parse(this._cameraCb.SelectedItem.ToString().Split(new char[] { '(', ')' })[1]);
+                int device_id_sub = int.Parse(this._cameraCb.SelectedItem.ToString().Split(new char[] { '(', ')' })[1]);
 
-                if (device_id == 1) { device_id = 2; }
-                else if (device_id == 2) { device_id = 1; }
+                if (device_id_sub == 1) { device_id_sub = 2; }
+                else if (device_id_sub == 2) { device_id_sub = 1; }
 
 
-                this._preset = CameraParameter.FromXml("cp_sub.xml");
+                this._preset_h = CameraParameter.FromXml("cp_sub.xml");
 
-                CamView f = new CamView();
+                CamView_h f_h = new CamView_h();
 
-                episcan.InitializeSensor(f.Handle, device_id);
-                episcan.ImageRoi = Roi;
+                subcam.InitializeSensor(f_h.Handle, device_id_sub);
+                subcam.ImageRoi = Roi;
                 //Roi = episcan.ImageRoi;
-                SetUIImageRoi();
+                //SetUIImageRoi();
 
-                f.Sensor = episcan.Sensor;
+                f_h.SubSensor = subcam.Sensor_h;
 
 
-                f.Show();
+                f_h.Show();
 
-                f.Width = (int)(0.5 * episcan.Sensor.Width);
-                f.Height = (int)(0.5 * episcan.Sensor.Height);
+                f_h.Width = (int)(0.5 * subcam.Sensor_h.Width);
+                f_h.Height = (int)(0.5 * subcam.Sensor_h.Height);
 
                // InitUIfromCamera();
                // InitUI();
@@ -483,14 +489,14 @@ namespace DelaySweepDemo
                 this._episcanGb.Enabled = true;
 
                 // apply camera parameters
-                try
-                {
-                    ApplyCameraParameters(this._preset);
-                }
-                catch (Exception)
-                {
+                //try
+                //{
+                //    ApplyCameraParameters_h(this._preset_h);
+                //}
+                //catch (Exception)
+                //{
 
-                }
+                //}
 
                 // update UI
                 //UpdateUIfromCamera();
@@ -499,7 +505,7 @@ namespace DelaySweepDemo
 
                 //UpdateDispString();
 
-                episcan.Sensor.StartCapture();
+                subcam.Sensor_h.StartCapture();
             }
             catch (Exception ex)
             {
@@ -522,6 +528,22 @@ namespace DelaySweepDemo
             episcan.Sensor.MasterGain = param.MasterGain;
             episcan.Sensor.Scaler = param.Scaler;
             episcan.Sensor.PixelFormat = param.PixelFormat;
+        }
+
+        private void ApplyCameraParameters_h(CameraParameter param)
+        {
+            //episcan.Sensor.Delay = param.Delay;
+            subcam.Sensor_h.DelayOffset = param.DelayOffset;
+            subcam.Sensor_h.PixelClock = param.PixelClock;
+            subcam.Sensor_h.Exposure = param.Exposure;
+            subcam.Sensor_h.ShutterMode = param.ShutterMode_h;
+            subcam.Sensor_h.TrigerMode = param.TriggerMode_h;
+            subcam.Sensor_h.Width = param.Width;
+            subcam.Sensor_h.Height = param.Height;
+            subcam.Sensor_h.EnableGainBoost = param.EnableGainBoost;
+            subcam.Sensor_h.MasterGain = param.MasterGain;
+            subcam.Sensor_h.Scaler = param.Scaler;
+            subcam.Sensor_h.PixelFormat = param.PixelFormat_h;
         }
 
 
