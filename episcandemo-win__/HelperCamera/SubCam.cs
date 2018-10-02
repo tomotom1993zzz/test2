@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenCvSharp;
 
+//a
 namespace HelperCameraUtil
 {
     public class SubCam
